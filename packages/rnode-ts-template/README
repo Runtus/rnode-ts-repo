@@ -1,0 +1,11 @@
+### 目前的问题
+1. 打包生成文件过大，看有没有优化方案。
+2. eslint和prettier的联动有bug。
+
+
+
+
+### TODO
+1. 增加commit husky
+2. 将bin仓库和tempalte仓库合并为一个仓库，具体看看simple-git能不能拷贝路径的文件夹
+3. 

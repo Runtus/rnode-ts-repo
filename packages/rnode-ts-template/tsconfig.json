@@ -1,0 +1,17 @@
+// tsconfig.json
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "sourceMap": true,
+    "outDir": "./lib",
+    "declaration": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true
+  },
+  "include": [".eslintrc.mjs", "src/**/*"],
+  "exclude": ["node_modules", "lib/**/*"]
+}

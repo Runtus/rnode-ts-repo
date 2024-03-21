@@ -1,0 +1,32 @@
+{
+  "name": "rnode-ts",
+  "version": "0.0.4",
+  "bin": {
+    "rnode-ts": "./bin/index.js"
+  },
+  "main": "index.js",
+  "description": "Template-Node-Ts-Package bin",
+  "type": "module",
+  "scripts": {
+    "test": "jest",
+    "run": "node index.js",
+    "build": "rollup -c"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "commander": "^12.0.0",
+    "fs-extra": "^11.2.0",
+    "handlebars": "^4.7.8",
+    "inquirer": "^9.2.16",
+    "rollup": "^4.13.0",
+    "simple-git": "^3.23.0"
+  },
+  "dependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/inquirer": "^9.0.7",
+    "ora": "^8.0.1"
+  }
+}
