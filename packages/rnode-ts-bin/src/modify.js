@@ -9,7 +9,8 @@ export const modifyPackageJson = (filePath, options) => {
         const content = fs.readFileSync(packageJsonPath).toString();
         const template = handlebars.compile(content);
         const target = template(options);
-        fs.writeFileSync(path.join(filePath, "test.json"), target);
+        fs.removeSync(path.join(filePath, ".git"));
+        fs.writeFileSync(path.join(filePath, "package.json"), target);
         return true;
     } else {
         console.log("Node Package Error: No template folder, maybe because of the web connection error.")

@@ -52549,11 +52549,14 @@ init_git_response_error();
 var simpleGit = gitInstanceFactory;
 
 // 将tempalte从模版中移出
-const moveTemplate = (gitpath, localPath, templateName, customName) => {
-  if (fs.existsSync(gitpath)) {
-    const source = path$e.join(gitpath, "packages", templateName);
-    const target = path$e.join(localPath, customName);
+const moveTemplate = (localPath, templateName, tempPath) => {
+  if (fs.existsSync(tempPath)) {
+    // 获取template
+    const source = path$e.join(tempPath, "packages", templateName);
+    const target = localPath;
+    // 将模版抽离出来并做覆盖
     fs.moveSync(source, target);
+    console.log("Move Success");
   } else {
     console.error("Git Error, Move Template Failed!");
   }
@@ -52562,15 +52565,20 @@ const moveTemplate = (gitpath, localPath, templateName, customName) => {
 // templateName是给未来多模版选择预留的接口
 const downloadTemplate = async (
   templateGitUrl,
-  localPath,
+  root, // 本地拷贝的地址
   templateName,
-  customName
+  custonName
 ) => {
   const loading = ora("Download Node-Ts-Package Template...");
   try {
     loading.start("Start download template...");
-    await simpleGit().clone(templateGitUrl, localPath);
-    moveTemplate(templateGitUrl, localPath, templateName, customName);
+    const localPath = path$e.join(root, custonName);
+    // tempPath是存放github仓库的临时路径
+    const tempPath = path$e.join(root, "aa114514");
+    await simpleGit().clone(templateGitUrl, tempPath);
+    moveTemplate(localPath, templateName, tempPath);
+    // 删除本地临时仓库
+    fs.removeSync(tempPath);
     loading.stop();
     loading.succeed("Download Success~");
     return true;
@@ -60862,7 +60870,8 @@ const modifyPackageJson = (filePath, options) => {
         const content = fs.readFileSync(packageJsonPath).toString();
         const template = handlebars$1.compile(content);
         const target = template(options);
-        fs.writeFileSync(require$$1$2.join(filePath, "test.json"), target);
+        fs.removeSync(require$$1$2.join(filePath, ".git"));
+        fs.writeFileSync(require$$1$2.join(filePath, "package.json"), target);
         return true;
     } else {
         console.log("Node Package Error: No template folder, maybe because of the web connection error.");
@@ -60906,16 +60915,16 @@ program
   .description("init a node program")
   .action(async () => {
     const options = await inquirer.prompt(InitPrompts);
-    const targetPath = path$e.join(process.cwd(), options.name);
+    const root = process.cwd(), customName = options.name;
     // TODO 未来的模版有多个，可以供给用户选择
     const template = "rnode-ts-template";
     const res = await downloadTemplate(
-      "git@github.com:Runtus/node-ts-package-template.git",
-      targetPath,
+      "https://github.com/Runtus/rnode-ts-repo.git",
+      root,
       template,
-      options.name
+      customName
     );
-    const isModifySuccess = modifyPackageJson(targetPath, options);
+    const isModifySuccess = modifyPackageJson(path$e.join(root, customName), options);
     if (res && isModifySuccess) {
       cli.succeed("Init Template Success!");
     } else {

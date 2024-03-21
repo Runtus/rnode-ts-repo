@@ -1,5 +1,5 @@
 {
-  "name": "node-template-ts",
+  "name": "rnode-ts-template",
   "version": "1.0.1",
   "main": "index.js",
   "description": "{{description}}",
@@ -14,8 +14,7 @@
     "tsr": "tsc",
     "lint": "eslint --ext .js .",
     "build": "rollup -c",
-    "test": "jest",
-    "c": "yarn build && node ./bin/index.js"
+    "test": "jest"
   },
   "license": "MIT",
   "devDependencies": {

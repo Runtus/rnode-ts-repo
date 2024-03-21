@@ -42,16 +42,16 @@ program
   .description("init a node program")
   .action(async () => {
     const options = await inquirer.prompt(InitPrompts);
-    const targetPath = path.join(process.cwd(), options.name);
+    const root = process.cwd(), customName = options.name;
     // TODO 未来的模版有多个，可以供给用户选择
     const template = "rnode-ts-template";
     const res = await downloadTemplate(
-      "git@github.com:Runtus/node-ts-package-template.git",
-      targetPath,
+      "https://github.com/Runtus/rnode-ts-repo.git",
+      root,
       template,
-      options.name
+      customName
     );
-    const isModifySuccess = modifyPackageJson(targetPath, options);
+    const isModifySuccess = modifyPackageJson(path.join(root, customName), options);
     if (res && isModifySuccess) {
       cli.succeed("Init Template Success!")
     } else {
