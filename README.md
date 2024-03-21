@@ -27,3 +27,10 @@ Contributions are welcome! If you find any issues or have any suggestions, pleas
 ## License
 
 This repository is licensed under the [MIT License](LICENSE).
+
+
+
+# TODO
+1. 添加husky
+2. 增加github hooks，合并代码时自动发包到npm packages
+3. 模版中的prettier和eslint联动有bug，需要做进一步的修改。

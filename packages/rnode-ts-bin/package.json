@@ -1,6 +1,6 @@
 {
   "name": "rnode-ts",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "bin": {
     "rnode-ts": "./bin/index.js"
   },
@@ -22,7 +22,10 @@
     "handlebars": "^4.7.8",
     "inquirer": "^9.2.16",
     "rollup": "^4.13.0",
-    "simple-git": "^3.23.0"
+    "rollup-plugin-typescript2": "^0.36.0",
+    "simple-git": "^3.23.0",
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.2"
   },
   "dependencies": {
     "@types/fs-extra": "^11.0.4",

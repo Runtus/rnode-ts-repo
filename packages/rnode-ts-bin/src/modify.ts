@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import handlebars from 'handlebars'
 
-export const modifyPackageJson = (filePath, options) => {
+export const modifyPackageJson = (filePath: string, options: string) => {
     const packageJsonPath = path.join(filePath, "package.json");
     // 确保存在文件夹存在
     if (fs.existsSync(packageJsonPath)) {

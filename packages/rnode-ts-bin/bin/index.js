@@ -21,6 +21,38 @@ import readline$1 from 'node:readline';
 import path$e from 'node:path';
 import require$$0$b from 'constants';
 
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise, SuppressedError, Symbol */
+
+
+function __awaiter$1(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+};
+
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 function getDefaultExportFromCjs (x) {
@@ -52550,48 +52582,49 @@ var simpleGit = gitInstanceFactory;
 
 // 将tempalte从模版中移出
 const moveTemplate = (localPath, templateName, tempPath) => {
-  if (fs.existsSync(tempPath)) {
-    // 获取template
-    const source = path$e.join(tempPath, "packages", templateName);
-    const target = localPath;
-    // 将模版抽离出来并做覆盖
-    fs.moveSync(source, target);
-    console.log("Move Success");
-  } else {
-    console.error("Git Error, Move Template Failed!");
-  }
+    if (fs.existsSync(tempPath)) {
+        // 获取template
+        const source = path$e.join(tempPath, "packages", templateName);
+        const target = localPath;
+        // 将模版抽离出来并做覆盖
+        fs.moveSync(source, target);
+        console.log("Move Success");
+    }
+    else {
+        console.error("Git Error, Move Template Failed!");
+    }
 };
-
 // templateName是给未来多模版选择预留的接口
-const downloadTemplate = async (
-  templateGitUrl,
-  root, // 本地拷贝的地址
-  templateName,
-  custonName
-) => {
-  const loading = ora("Download Node-Ts-Package Template...");
-  try {
-    loading.start("Start download template...");
-    const localPath = path$e.join(root, custonName);
+const downloadTemplate = (templateGitUrl, root, // 本地拷贝的地址
+templateName, custonName) => __awaiter$1(void 0, void 0, void 0, function* () {
+    const loading = ora("Download Node-Ts-Package Template...");
     // tempPath是存放github仓库的临时路径
     const tempPath = path$e.join(root, "aa114514");
-    await simpleGit().clone(templateGitUrl, tempPath);
-    moveTemplate(localPath, templateName, tempPath);
-    // 删除本地临时仓库
-    fs.removeSync(tempPath);
-    loading.stop();
-    loading.succeed("Download Success~");
-    return true;
-  } catch (err) {
-    loading.stop();
-    console.error("Clone Error", err);
-    loading.fail("Download Failed!");
-    return false;
-  }
-};
+    try {
+        loading.start("Start download template...");
+        const localPath = path$e.join(root, custonName);
+        yield simpleGit().clone(templateGitUrl, tempPath);
+        moveTemplate(localPath, templateName, tempPath);
+        // 删除本地临时仓库
+        fs.removeSync(tempPath);
+        loading.stop();
+        loading.succeed("Download Success~");
+        return true;
+    }
+    catch (err) {
+        loading.stop();
+        console.error("Clone Error", err);
+        loading.fail("Download Failed!");
+        // 如果已经创建了临时文件夹，记得删除
+        if (fs.existsSync(tempPath)) {
+            fs.removeSync(tempPath);
+        }
+        return false;
+    }
+});
 
 var name$1 = "rnode-ts";
-var version$1 = "0.0.4";
+var version$1 = "0.0.5";
 var bin = {
 	"rnode-ts": "./bin/index.js"
 };
@@ -52613,7 +52646,10 @@ var devDependencies = {
 	handlebars: "^4.7.8",
 	inquirer: "^9.2.16",
 	rollup: "^4.13.0",
-	"simple-git": "^3.23.0"
+	"rollup-plugin-typescript2": "^0.36.0",
+	"simple-git": "^3.23.0",
+	tslib: "^2.6.2",
+	typescript: "^5.4.2"
 };
 var dependencies = {
 	"@types/fs-extra": "^11.0.4",
@@ -60873,63 +60909,49 @@ const modifyPackageJson = (filePath, options) => {
         fs.removeSync(require$$1$2.join(filePath, ".git"));
         fs.writeFileSync(require$$1$2.join(filePath, "package.json"), target);
         return true;
-    } else {
+    }
+    else {
         console.log("Node Package Error: No template folder, maybe because of the web connection error.");
         return false;
     }
 };
 
-// 上面那个命令一定要加，否则bin不知道具体用哪个命令执行
-
-
 const program = new Command();
-
 const { name, description, version } = pjson;
-
 const InitPrompts = [
-  {
-    name: "name",
-    message: "Please input project name(default: node-ts-packages-cli)",
-    default: "node-ts-packages-cli",
-  },
-  {
-    name: "description",
-    message: "Please input description",
-    default: "",
-  },
-  {
-    name: "author",
-    message: "Please input author",
-    default: "Runtus",
-  },
+    {
+        name: "name",
+        message: "Please input project name(default: node-ts-packages-cli)",
+        default: "node-ts-packages-cli",
+    },
+    {
+        name: "description",
+        message: "Please input description",
+        default: "",
+    },
+    {
+        name: "author",
+        message: "Please input author",
+        default: "Runtus",
+    },
 ];
-
-
-
 program.name(name).description(description).version(version);
-
 const cli = ora();
-
 program
-  .command("init")
-  .description("init a node program")
-  .action(async () => {
-    const options = await inquirer.prompt(InitPrompts);
+    .command("init")
+    .description("init a node program")
+    .action(() => __awaiter$1(void 0, void 0, void 0, function* () {
+    const options = yield inquirer.prompt(InitPrompts);
     const root = process.cwd(), customName = options.name;
     // TODO 未来的模版有多个，可以供给用户选择
     const template = "rnode-ts-template";
-    const res = await downloadTemplate(
-      "https://github.com/Runtus/rnode-ts-repo.git",
-      root,
-      template,
-      customName
-    );
+    const res = yield downloadTemplate("https://github.com/Runtus/rnode-ts-repo.git", root, template, customName);
     const isModifySuccess = modifyPackageJson(path$e.join(root, customName), options);
     if (res && isModifySuccess) {
-      cli.succeed("Init Template Success!");
-    } else {
-      cli.fail("Init Template Failed!");
+        cli.succeed("Init Template Success!");
     }
-  });
-
+    else {
+        cli.fail("Init Template Failed!");
+    }
+}));
 program.parse();

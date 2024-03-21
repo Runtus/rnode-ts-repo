@@ -4,9 +4,9 @@ import { Command } from "commander";
 import inquirer from "inquirer";
 import path from 'node:path'
 import ora from 'ora'
-import { downloadTemplate } from "./download.js";
+import { downloadTemplate } from "./download";
 import pjson from "../package.json";
-import { modifyPackageJson } from "./modify.js";
+import { modifyPackageJson } from "./modify";
 
 
 const program = new Command();
