@@ -10,7 +10,8 @@
   "scripts": {
     "test": "jest",
     "run": "node index.js",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "publish": "npm publish"
   },
   "license": "MIT",
   "devDependencies": {

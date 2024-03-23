@@ -18,9 +18,7 @@ jobs:
           node-version: 16
       - run: npm install -g pnpm
       - run: pnpm install
-      - run: cd packages/rnode-ts-bin
-      - run: cat package.json
-      - run: pnpm build
+      - run: pnpm bin-build
 
   publish-npm:
     needs: build
@@ -31,7 +29,6 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - run: cd packages/rnode-ts-bin
-      - run: npm run build
+      - run: pnpm bin-publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

@@ -52634,7 +52634,8 @@ var type = "module";
 var scripts = {
 	test: "jest",
 	run: "node index.js",
-	build: "rollup -c"
+	build: "rollup -c",
+	publish: "npm publish"
 };
 var license = "MIT";
 var devDependencies = {

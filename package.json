@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "bin-build": "pnpm -C packages/rnode-ts-bin exec -- pnpm build",
+    "bin-publish": "pnpm -C packages/rnode-ts-bin exec -- npm publish"
   },
   "keywords": [],
   "author": "",
