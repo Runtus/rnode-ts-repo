@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "bin-build": "pnpm -C packages/rnode-ts-bin exec -- pnpm build",
-    "bin-publish": "pnpm -C packages/rnode-ts-bin exec -- npm publish"
+    "bin-publish": "pnpm -C packages/rnode-ts-bin exec -- npm bin-publish"
   },
   "keywords": [],
   "author": "",
