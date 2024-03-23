@@ -16,9 +16,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: ls
+      - run: npm install -g pnpm
+      - run: pnpm install
       - run: cd packages/rnode-ts-bin
-      - run: npm run build
+      - run: pnpm build
 
   publish-npm:
     needs: build
