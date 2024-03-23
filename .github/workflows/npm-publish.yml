@@ -16,6 +16,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      - run: ls
       - run: cd packages/rnode-ts
       - run: npm run build
 
