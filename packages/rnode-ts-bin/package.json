@@ -1,12 +1,16 @@
 {
   "name": "rnode-ts",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "bin": {
     "rnode-ts": "./bin/index.js"
   },
   "main": "index.js",
   "description": "Template-Node-Ts-Package bin",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Runtus/rnode-ts-repo"
+  },
   "scripts": {
     "test": "jest",
     "run": "node index.js",
