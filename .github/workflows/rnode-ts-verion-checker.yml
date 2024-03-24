@@ -5,7 +5,7 @@ name: rnode-ts-version-checker
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "version" ]
 
 jobs:
   build:
