@@ -12,8 +12,9 @@ This is a template repository for developing third-party npm packages using Node
 
 To get started with developing your npm package, follow these steps:
 
-1. Input `npx rnode-ts` in your terminal.
-2. Follow the tips, input the project name, descrtion and author.
+1. Input `npm install -g rnode-ts` in your terminal.
+2. Input `rnode-ts initialize` your template.
+3. Follow the tips, input the project name, descrtion and author.
 
 
 ## Configuration
